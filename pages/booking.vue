@@ -1,6 +1,7 @@
 <template>
   <v-parallax src="/pic/background.png" height="643">
     <v-layout column align-center justify-center>
+      <h1>Room Booking : {{ user.tFirstname || '' }}</h1>
       <v-flex xs12 lg6>
         <v-menu
           :close-on-content-click="false"
@@ -38,7 +39,23 @@
         </template>
       </v-data-table>
 
+      <v-flex xs12 sm6/>
+      <v-flex xs12 sm6>
+        <v-select
+          :items="states"
+          v-model="e6"
+          label="Select"
+          multiple
+          max-height="400"
+          hint="กรุณาเลือกเวลา"
+          persistent-hint
+        />
+        <v-btn color="warning" @click="Dosave">จองห้อง</v-btn>
+      </v-flex>
     </v-layout>
+    <div>
+      <a>test</a>
+    </div>
   </v-parallax>
 </template>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -59,10 +76,12 @@ a {
 }
 </style>
 <script>
+
 export default {
   data() {
     return {
-      date: '',
+      user: JSON.parse(window.sessionStorage.getItem('user')),
+      date: this.$moment().format('YYYY-MM-DD'),
       dateFormatted: null,
       menud: false,
       bks: [],
@@ -94,6 +113,10 @@ export default {
     },
   },
   async created() {
+    let ok = await JSON.parse(window.sessionStorage.getItem('user'))
+    if (!ok) {
+      return this.$router.replace('/login')
+    }
     this.getBooking()
   },
   methods: {
@@ -102,16 +125,17 @@ export default {
       this.bks = res.data.bk
     },
     async Dosave() {
-      let res = await this.$http.post('/student/regis', {
+      let res = await this.$http.post('/student/save', {
         b_date: this.date,
         b_time: this.e6,
-
+        user: this.user.tFirstname,
+        keyRoom: ('' + Math.floor(Math.random() * 1000000)).padStart(6, '0'),
       })
       if (!res.data.ok) {
         // TODO: แสดงข้อความ ว่าบันทึกไม่สำเร็จ
       } else {
         // TODO: แสดงข้อความ ว่าบันทึกสำเร็จ
-        this.$router.push('/login')
+        this.$router.push('/booking')
       }
     },
     formatDate (date) {

@@ -1,67 +1,63 @@
 <template>
-  <v-parallax src="/pic/background.png" height="643">
-    <v-layout column align-center justify-center>
-      <v-flex xs12 lg6>
-        <v-menu
-          :close-on-content-click="false"
-          v-model="menud"
-          :nudge-right="40"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          max-width="290px"
-          min-width="290px"
-        >
-          <v-text-field
-            slot="activator"
-            v-model="computedDateFormatted"
-            label="กรุณาเลือกวันที่"
-            hint="MM/DD/YYYY format"
-            persistent-hint
-            prepend-icon="event"
-            readonly
-          />
-          <v-date-picker v-model="date" no-title @input="menud = false"/>
-        </v-menu>
-        <p>Date in ISO format: <strong>{{ date }}</strong></p>
-      </v-flex>
-      <v-data-table
-        :headers="headers"
-        :items="bks"
-        class="elevation-1"
+  <div>
+    <h1>Room Booking : {{ user.tFirstname }}</h1>
+    <v-flex xs12 lg6>
+      <v-menu
+        :close-on-content-click="false"
+        v-model="menud"
+        :nudge-right="40"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        max-width="290px"
+        min-width="290px"
       >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-left">{{ props.item.bDate }}</td>
-          <td class="text-xs-left">{{ props.item.bTimein }}</td>
-          <td class="text-xs-left">{{ props.item.user }}</td>
-        </template>
-      </v-data-table>
+        <v-text-field
+          slot="activator"
+          v-model="computedDateFormatted"
+          label="กรุณาเลือกวันที่"
+          hint="MM/DD/YYYY format"
+          persistent-hint
+          prepend-icon="event"
+          readonly
+        />
+        <v-date-picker v-model="date" no-title @input="menud = false"/>
+      </v-menu>
+      <p>Date in ISO format: <strong>{{ date }}</strong></p>
+    </v-flex>
+    <v-data-table
+      :headers="headers"
+      :items="bks"
+      class="elevation-1"
+    >
+      <template slot="items" slot-scope="props">
+        <td class="text-xs-left">{{ props.item.bDate }}</td>
+        <td class="text-xs-left">{{ props.item.bTimein }}</td>
+        <td class="text-xs-left">{{ props.item.tEmail }}</td>
+      </template>
+    </v-data-table>
 
-    </v-layout>
-  </v-parallax>
+    <v-flex xs12 sm6/>
+    <v-flex xs12 sm6>
+      <v-select
+        :items="states"
+        v-model="e6"
+        label="Select"
+        multiple
+        max-height="400"
+        hint="กรุณาเลือกเวลา"
+        persistent-hint
+      />
+      <v-btn color="info" @click="Dosave">จองห้อง</v-btn>
+    </v-flex>
+  </div>
 </template>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
 <script>
 export default {
   data() {
     return {
+      user: JSON.parse(window.sessionStorage.getItem('user')),
       date: '',
       dateFormatted: null,
       menud: false,

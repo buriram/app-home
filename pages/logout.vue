@@ -5,53 +5,28 @@
       contain
       src="/pic/logo.png"
     />
-
     <v-card height="250" color="teal lighten-4">
-      <form class="form-signin" @submit.prevent="login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <input id="inputEmail" v-model="email" type="email" class="form-control" placeholder="Email address" required autofocus>
-        <input id="inputPassword" v-model="password" type="password" class="form-control" placeholder="Password" required>
-        <div class="text-xs-center">
-          <v-btn color="orange" type="submit" >Sign in</v-btn>
-        </div>
-      </form>
+      <div class="text-xs-center">
+        <v-btn color="warning" @click="Dologout">Sign Out.</v-btn>
+      </div>
     </v-card>
-    <v-snackbar
-      v-model="snackbar"
-      top
-    >
-      login failed
-      <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
-    </v-snackbar>
 
   </v-parallax>
 </template>
-
 <script>
 export default {
-  name: 'Login',
-  data () {
-    return {
-      email: '',
-      password: '',
-      snackbar: false,
-    }
-  },
   methods: {
-    async login () {
-      let res = await this.$http.post('/login', {email: this.email, password: this.password})
-      if (res.data.ok) {
-        window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
-        this.$router.push('/booking')
-      } else {
-        this.snackbar = true
+    async Dologout() {
+      let ok = await JSON.parse(window.sessionStorage.getItem('user'))
+      if (ok) {
+        window.sessionStorage.removeItem('user')
+        this.$router.push('/')
       }
-      // console.log(this.password)
+      return this.$router.replace('/')
     },
   },
 }
 </script>
-
 <style lang="css">
 body {
   background: #605B56;

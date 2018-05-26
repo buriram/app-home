@@ -6,10 +6,9 @@
           height="593px"
           contain
           src="/pic/logo.png"
-        >  
-        </v-card-media>
+        />
         <div class="text-xs-center">
-          <v-btn color="orange">Continue to program</v-btn>
+          <v-btn color="orange" @click="trunIn">Continue to program</v-btn>
         </div>
       </v-card>
     </v-flex>
@@ -35,3 +34,12 @@ b {
   color: darkgoldenrod;
 }
 </style>
+<script>
+export default {
+  methods: {
+    async trunIn() {
+      this.$router.push('/booking')
+    },
+  }, // methods
+}
+</script>

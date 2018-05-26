@@ -1,45 +1,46 @@
 <template>
-  <v-parallax src="/pic/background.png" height="643">
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card color="transparent">
-        <v-card-media
-          height="593px"
-          contain
-          src="/pic/logo.png"
-        />
-        <div class="text-xs-center">
-          <v-btn color="orange" @click="trunIn">Continue to program</v-btn>
-        </div>
-      </v-card>
-    </v-flex>
-  </v-parallax>
+  <v-container>
+    <v-layout column>
+      <v-flex>
+        <v-text-field v-model="form.login" label="อีเมลล์"/>
+      </v-flex>
+      <v-flex>
+        <v-text-field v-model="form.pass" label="รหัสผ่าน"/>
+      </v-flex>
+      <v-flex>
+        <v-btn color="primary" @click="doLogin">เข้าสู่ระบบ</v-btn>
+        Or
+        <nuxt-link to="/register">Register </nuxt-link>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-b {
-  color: darkgoldenrod;
-}
-</style>
 <script>
+let blankForm = {
+  login: '',
+  pass: '',
+}
+
 export default {
+  layout: 'public',
+  data() {
+    return {
+      form: JSON.parse(JSON.stringify(blankForm)),
+    }
+  },
   methods: {
-    async trunIn() {
-      this.$router.push('/booking')
+    async doLogin() {
+      let res = await this.$http.post('/login', this.form)
+      if (!res.data.ok) {
+        // TODO: login ไม่สำเร็จ
+        return
+      }
+      console.log('login สำเร็จ')
+      // 1. จำ user/login
+      window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
+      // 2. ไปหน้า home
+      this.$router.push('/student-list')
     },
-  }, // methods
+  },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="light-blue darken-3" dark>
     <v-navigation-drawer v-model="drawer" app right>
       <v-toolbar flat>
         <v-list>
@@ -21,18 +21,16 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app class="cyan darken-2" dark>
-      <v-toolbar-title style="cursor: pointer" @click="homeClick"><v-icon class="green lighten-3">home</v-icon> RooMBooKing Wellcome </v-toolbar-title>
+    <v-toolbar app class="light-blue darken-4" dark>
+      <v-toolbar-title style="cursor: pointer" @click="homeClick"><v-icon class="green lighten-3">home</v-icon> Wellcome</v-toolbar-title>
       <v-spacer/>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"/>
     </v-toolbar>
     <v-content>
-      <nuxt/>
+      <v-container>
+        <nuxt/>
+      </v-container>
     </v-content>
-    <v-footer class="pa-3" color="grey lighten-1">
-      <v-spacer>Power By VEC (All right reserved)</v-spacer>
-      <div>&copy; {{ new Date().getFullYear() }}</div>
-    </v-footer>
   </v-app>
 </template>
 
@@ -41,12 +39,11 @@ export default {
   data() {
     return {
       items: [
-        { title: 'Home', icon: 'home', url: '/' },
-        { title: 'Room', icon: 'update', url: '/room' },
-        { title: 'Booking', icon: 'assignment_turned_in', url: '/booking' },
+        { title: 'Home', icon: 'home', url: '/student-list' },
+        { title: 'memo', icon: 'group', url: '/Record' },
+        { title: 'Recordings', icon: 'group', url: '/recordings' },
         { title: 'Chat', icon: 'group', url: '/chat' },
-        { title: 'key', icon: 'security', url: '/keyroom' },
-        { title: 'Logout', icon: 'lock', url: '/Logout' },
+        { title: 'Logout', icon: 'group', url: '/' },
       ],
       right: null,
     }

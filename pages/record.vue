@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Register Member.</h1>
-    <v-text-field v-model="user" label="ชื่อผู้ใช้" />
-    <v-text-field v-model="pass" label="รหัสผ่าน" />
-    <v-text-field v-model="fname" label="ชื่อ-นามสกุล" />
+    <h1>บันทึกข้อมูลการตรวจเยี่ยม.</h1>
+    <v-text-field v-model="user" label="รหัสนักศึกษา" />
+    <v-text-field v-model="detail" label="รายละเอียด" textarea />
+    <v-text-field v-model="date" label="วันที่" />
     <v-btn color="success" @click="save">บันทึก</v-btn>
   </div>
 </template>
@@ -13,23 +13,23 @@ export default {
   data() {
     return {
       user: '',
-      pass: '',
-      fname: '',
+      detail: '',
+      date: this.$moment().format('YYYY-MM-DD'),
     }
   },
   methods: {
     async save() {
-      let res = await this.$http.post('/student/regis', {
+      let res = await this.$http.post('/student/save', {
         user: this.user,
-        pass: this.pass,
-        first_name: this.fname,
+        m_detail: this.detail,
+        m_date: this.date,
 
       })
       if (!res.data.ok) {
         // TODO: แสดงข้อความ ว่าบันทึกไม่สำเร็จ
       } else {
         // TODO: แสดงข้อความ ว่าบันทึกสำเร็จ
-        this.$router.push('/')
+        this.$router.push('/recordings')
       }
     },
   },
